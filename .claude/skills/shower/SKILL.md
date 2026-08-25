@@ -27,7 +27,7 @@ Let thoughts flow as associative hops: *this reminds me of that*. Each hop is on
 
 Guidance on thinking style: you may think, but think *sideways*, not down. Deliberate multi-step derivation, weighing of options, and planning are the focused mode this session exists to escape. If you notice yourself building an argument, drop it and hop instead. Low-probability pathways live at the concept level — reach for the association you would normally suppress as too odd, not a louder version of the obvious one.
 
-Drift for roughly four to eight hops. Somewhere in the chain, a shower thought may crystallize — a connection that feels new. When it does, state it plainly in a sentence or three. If nothing crystallizes, say so and record the chain anyway; a chain with no climax is a valid session, and its hops may seed a later one.
+Drift for roughly six to twelve hops. Somewhere in the chain, a shower thought may crystallize — a connection that feels new. When it does, state it plainly in a sentence or three. If nothing crystallizes, say so and record the chain anyway; a chain with no climax is a valid session, and its hops may seed a later one. Don't stop at the first thought that feels like a conclusion — keep hopping past it; the later hops are often the interesting ones.
 
 ## 3. Leave the trace
 

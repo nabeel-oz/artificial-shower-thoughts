@@ -1,10 +1,12 @@
 # Artificial Shower Thoughts
 
-An automated brainstorming tool with a flavour: instead of asking an AI to *work* on ideas, it asks an AI to *shower*.
+An automated brainstorming tool with a flavour: instead of putting an AI to *work* on ideas, it sends it for a *shower*.
 
 ## The idea
 
-Human breakthroughs rarely arrive mid-spreadsheet. They arrive in the shower, on a walk, half-asleep — when focused effort stops and the mind drifts. Cognitive science calls this the incubation effect: undirected, low-focus processing lets weakly-associated knowledge connect in ways deliberate reasoning doesn't. The apple drops, the snake bites its tail, the helix appears.
+Does unlocking novel ideas from AI just require more scale? Or do we need to learn how to induce AI to "think" in the ways that make humans creative?
+
+Human breakthroughs rarely arrive via step-by-step reasoning. They arrive in the shower, on a walk, half-asleep — when focused effort stops and the mind drifts. Cognitive science calls this the incubation effect: undirected, low-focus processing lets weakly-associated knowledge connect in ways deliberate reasoning doesn't. The apple drops, the snake bites its tail, the helix appears.
 
 This project gives an AI a scheduled shower. On a cron schedule (or on demand), an agent steps away from tasks and goals and drifts: it takes a seed — a field where a new idea could genuinely matter, a random stray stimulus, an old parked idea, or a topic you hand it — and follows associative hops without judging them, leaving just enough of a trace to capture the chain. The aspiration is the relaxed, creative thought of a genius who holds all the clues but hasn't yet made the connection.
 
@@ -73,4 +75,4 @@ Each operation commits its output, and pushes if the repo has a remote — so a 
 
 ## Watching the experiment
 
-Each trace records which model showered. The reviewer counts recurrences — when a model re-derives an idea the corpus already holds. Over time, `wiki/index.md` becomes a small dataset on model creativity: idea diversity per model, recurrence rates, and whether anything ever passes the only filter that finally matters — a human with taste deciding an idea is worth pursuing.
+Each trace records the drift, any light-bulb moment, and which model showered. The reviewer counts recurrences — when a model re-derives an idea the corpus already holds. Over time, `wiki/index.md` becomes a small dataset on model creativity: idea diversity per model, recurrence rates, and whether anything ever passes the only filter that finally matters — a human with taste deciding an idea is worth pursuing.
