@@ -1,0 +1,1 @@
+Run a wiki lint pass. Follow the lint skill (.claude/skills/lint/SKILL.md) exactly. Maintenance only — connect, consolidate, and index existing wiki pages; do not generate new shower thoughts and do not edit raw traces.
