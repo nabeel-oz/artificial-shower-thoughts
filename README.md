@@ -69,7 +69,19 @@ Scheduled showers via cron (see `scripts/run_shower.sh` and `scripts/run_review.
 30 7 * * * /path/to/artificial-shower-thoughts/scripts/run_review.sh
 ```
 
-On Windows, run the same scripts via WSL cron, or schedule the equivalent `claude -p` commands with Task Scheduler.
+On Windows, `scripts/run_shower.ps1` and `scripts/run_review.ps1` are PowerShell twins of the shell scripts, and `scripts/register_tasks.ps1` registers them with Task Scheduler. Prefer that to cron under WSL, which doesn't start on its own and dies with the WSL VM:
+
+```powershell
+# Hourly showers 9am-3pm, each reviewed 30 minutes later
+.\scripts\register_tasks.ps1
+
+# A single 7am shower, reviewed at 7:30
+.\scripts\register_tasks.ps1 -ShowerStart 07:00 -ReviewStart 07:30 -Hours 0
+
+.\scripts\register_tasks.ps1 -Unregister
+```
+
+The tasks run while you're logged on, and a run missed with the machine asleep fires when it next wakes. The PowerShell scripts also take a lock in `logs/`, so a review that fires while a shower is still running skips instead of committing into the same working tree — the next review picks up the backlog.
 
 Each operation commits its output, and pushes if the repo has a remote — so a scheduled shower needs no manual git tending.
 
