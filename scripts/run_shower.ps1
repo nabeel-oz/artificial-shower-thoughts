@@ -2,6 +2,10 @@
 # Model choice is part of the experiment: traces record which model showered,
 # and the reviewer counts per-model recurrences. Rotate models if curious.
 $ErrorActionPreference = 'Stop'
+# Bill the Claude Code subscription, not API credits: a machine-wide
+# ANTHROPIC_API_KEY would otherwise switch headless runs to pay-as-you-go.
+$env:ANTHROPIC_API_KEY = $null
+
 $repo = Split-Path -Parent $PSScriptRoot
 Set-Location $repo
 

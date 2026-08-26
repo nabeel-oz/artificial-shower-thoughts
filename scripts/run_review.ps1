@@ -2,6 +2,10 @@
 # Run some time after run_shower.ps1 so the reviewer gets fresh context,
 # uncontaminated by the shower session.
 $ErrorActionPreference = 'Stop'
+# Bill the Claude Code subscription, not API credits: a machine-wide
+# ANTHROPIC_API_KEY would otherwise switch headless runs to pay-as-you-go.
+$env:ANTHROPIC_API_KEY = $null
+
 $repo = Split-Path -Parent $PSScriptRoot
 Set-Location $repo
 

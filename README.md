@@ -31,7 +31,7 @@ Requires [Claude Code](https://claude.com/claude-code). Clone the repo and you h
 ```bash
 git clone https://github.com/nabeel-oz/artificial-shower-thoughts
 cd artificial-shower-thoughts
-claude -p "/shower"
+claude
 ```
 
 What you clone is the framework; what it generates is yours. Since an idea corpus is the kind of thing you may not want public, point the repo at your own remote before the first shower — the workflows commit and push automatically, so this is worth deciding up front:
@@ -43,25 +43,52 @@ gh repo create my-showers --private --source . --push
 
 Later, `git pull upstream main` brings in framework changes without touching your traces. (A GitHub fork can't do this — forks inherit the parent repo's visibility, so a fork of a public repo is always public.)
 
-## Usage
+## Running it
 
-```bash
-# A shower with a random seed
-claude -p "/shower"
+Three ways, in increasing order of how much you set up once and forget. All three run the same three operations against the same repo, so you can mix them freely — shower by hand today, on a schedule tomorrow.
 
-# A shower seeded with your own topic — human and AI shower thoughts colliding
-claude -p "/shower battery chemistry and coral reefs"
+The operations are always separate invocations. The reviewer must start from fresh context, uncontaminated by the shower session that produced the trace; running both in one session defeats the design.
 
-# Review any unreviewed traces (run as a separate invocation so the
-# reviewer gets fresh context, uncontaminated by the shower session)
-claude -p "/post-shower"
+### 1. By hand, in a chat
 
-# Periodic wiki maintenance: cross-link ideas, promote recurring themes
-# to concept pages, merge near-duplicates (roughly monthly)
-claude -p "/lint"
+The simplest mode, and the best one for the first few runs — you watch the drift happen and get a feel for what the seeds do.
+
+```
+/shower                              # a shower with a random seed
+/shower battery chemistry and coral reefs   # your own seed: human and AI shower thoughts colliding
+/post-shower                         # review any unreviewed traces
+/lint                                # periodic wiki maintenance (roughly monthly)
 ```
 
-Scheduled showers via cron (see `scripts/run_shower.sh` and `scripts/run_review.sh`; both default to the latest Opus model, override with `SHOWER_MODEL` / `REVIEW_MODEL`):
+Run `/post-shower` in a new chat, not the one that just showered.
+
+### 2. Scheduled in the cloud
+
+Claude Code's `/schedule` runs a routine on Anthropic's infrastructure on a cron schedule — nothing on your machine needs to be awake. This suits the project well, because everything here is markdown in git: the cloud agent clones your repo, showers, commits, pushes, and your local clone picks it up on the next `git pull`.
+
+In any Claude Code chat:
+
+```
+/schedule a shower in nabeel-oz/my-showers every day at 7am, and a review at 7:30am
+```
+
+Three things to get right when it asks:
+
+- **Point it at your own private repo**, not this framework repo. The cloud agent needs push access to wherever your corpus lives.
+- **Include `Skill` in the allowed tools**, alongside `Bash`, `Read`, `Write`, `Edit`, `Glob`, `Grep`, `WebSearch` and `WebFetch`. Without it the agent can read the skill files but can't invoke them, and the reviewer needs web access for prior-art search.
+- **Write a self-contained prompt.** A cloud routine starts with zero context and is not guaranteed to expand a bare `/shower` the way an interactive session does. Name the skill file explicitly instead:
+
+  > Run one shower session. Read `CLAUDE.md`, then follow `.claude/skills/shower/SKILL.md` exactly. Generation only — do not review, judge, or search for prior art. Commit and push.
+
+The repo's `CLAUDE.md` and `.claude/skills/` are committed, so they land in the cloud checkout and behave exactly as they do locally. Note that routines have a minimum interval of one hour, and cron expressions are in UTC.
+
+### 3. Scheduled on your own machine
+
+Use this when you want the runs happening in your real working tree — the traces appear in your local clone as they're written, with no pull needed.
+
+Both scripts default to the latest Opus; override with `SHOWER_MODEL` / `REVIEW_MODEL`.
+
+**Linux / macOS** — cron:
 
 ```cron
 # A shower at 7am daily, reviewed 30 minutes later
@@ -69,7 +96,7 @@ Scheduled showers via cron (see `scripts/run_shower.sh` and `scripts/run_review.
 30 7 * * * /path/to/artificial-shower-thoughts/scripts/run_review.sh
 ```
 
-On Windows, `scripts/run_shower.ps1` and `scripts/run_review.ps1` are PowerShell twins of the shell scripts, and `scripts/register_tasks.ps1` registers them with Task Scheduler. Prefer that to cron under WSL, which doesn't start on its own and dies with the WSL VM:
+**Windows** — `register_tasks.ps1` registers the PowerShell twins with Task Scheduler. Prefer this to cron under WSL, which doesn't start on its own and dies with the WSL VM:
 
 ```powershell
 # Hourly showers 9am-3pm, each reviewed 30 minutes later
@@ -81,7 +108,11 @@ On Windows, `scripts/run_shower.ps1` and `scripts/run_review.ps1` are PowerShell
 .\scripts\register_tasks.ps1 -Unregister
 ```
 
-The tasks run while you're logged on, and a run missed with the machine asleep fires when it next wakes. The PowerShell scripts also take a lock in `logs/`, so a review that fires while a shower is still running skips instead of committing into the same working tree — the next review picks up the backlog.
+The tasks run while you're logged on, and a run missed with the machine asleep fires when it next wakes. The scripts take a lock in `logs/`, so a review that fires while a shower is still running skips instead of committing into the same working tree — the next review picks up the backlog.
+
+Scheduled runs are silent by design, so check `logs/cron.log` after the first one. A clean run ends with `exit 0`.
+
+> **If the log says `Credit balance is too low`:** you have `ANTHROPIC_API_KEY` set in your environment. Claude Code prefers that key over your subscription login and bills the API instead. The scripts unset it for exactly this reason — if you invoke `claude -p` yourself, do the same, or drop the variable if you don't otherwise use it.
 
 Each operation commits its output, and pushes if the repo has a remote — so a scheduled shower needs no manual git tending.
 
