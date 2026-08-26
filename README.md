@@ -66,21 +66,21 @@ Run `/post-shower` in a new chat, not the one that just showered.
 
 Claude Code's `/schedule` runs a routine on Anthropic's infrastructure on a cron schedule — nothing on your machine needs to be awake. This suits the project well, because everything here is markdown in git: the cloud agent clones your repo, showers, commits, pushes, and your local clone picks it up on the next `git pull`.
 
-In any Claude Code chat:
+In any Claude Code chat, paste this once — substituting your own repo and times:
 
 ```
-/schedule a shower in nabeel-oz/my-showers every day at 7am, and a review at 7:30am
+/schedule two routines on github.com/me/my-showers, both allowing the tools
+Skill, Read, Write, Edit, Glob, Grep, WebSearch, WebFetch and Bash:
+
+  shower at 7am daily  — prompt: "Read and follow .claude/commands/shower.md"
+  review at 7:30am daily — prompt: "Read and follow .claude/commands/post-shower.md"
 ```
 
-Three things to get right when it asks:
+That is the whole setup. The prompts name a file rather than restating an instruction, so the routines stay correct as the skills evolve — and a cloud agent that starts with zero context needs no expansion machinery to follow a path.
 
-- **Point it at your own private repo**, not this framework repo. The cloud agent needs push access to wherever your corpus lives.
-- **Include `Skill` in the allowed tools**, alongside `Bash`, `Read`, `Write`, `Edit`, `Glob`, `Grep`, `WebSearch` and `WebFetch`. Without it the agent can read the skill files but can't invoke them, and the reviewer needs web access for prior-art search.
-- **Write a self-contained prompt.** A cloud routine starts with zero context and is not guaranteed to expand a bare `/shower` the way an interactive session does. Name the skill file explicitly instead:
+Why the details are spelled out: a routine runs in a sandbox with only the tools you grant it, and `Skill` is not in the default set — without it the agent can read the skill files but never invoke them. `WebSearch` and `WebFetch` matter just as much, since prior-art search is most of the reviewer's value. Point the routines at *your* corpus repo, not this framework repo; the agent needs push access to wherever your traces live.
 
-  > Run one shower session. Read `CLAUDE.md`, then follow `.claude/skills/shower/SKILL.md` exactly. Generation only — do not review, judge, or search for prior art. Commit and push.
-
-The repo's `CLAUDE.md` and `.claude/skills/` are committed, so they land in the cloud checkout and behave exactly as they do locally. Note that routines have a minimum interval of one hour, and cron expressions are in UTC.
+The repo's `CLAUDE.md` and `.claude/skills/` are committed, so they land in the cloud checkout and behave exactly as they do locally. Routines have a minimum interval of one hour, and cron expressions are in UTC.
 
 ### 3. Scheduled on your own machine
 
