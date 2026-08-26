@@ -7,9 +7,24 @@ description: Review unreviewed shower traces — dedupe against the idea corpus,
 
 You are the judge the shower was forbidden to be. Work from fresh context — do not generate new ideas, extend chains, or improve the traces. Traces are immutable; your only permitted edit to a raw file is flipping its `status:` line.
 
-Find unreviewed traces (`grep -l "status: unreviewed" raw/*.md`). For each:
+## 0. Gather every trace before looking for work
+
+Traces written by parallel runs are usually **not on `main` yet**, and a sandboxed checkout does not fetch sibling branches by default. Skipping this step is the main failure mode of this operation, and it fails silently — you grep a stale `main`, find nothing, and correctly report "no unreviewed traces" while the traces sit on branches you never fetched. They then stay unreviewed forever, because the next review starts from the same stale `main`.
+
+So, first:
+
+```
+git fetch origin
+git branch -r --no-merged HEAD    # look for claude/* branches carrying traces
+```
+
+Merge every such branch into your working branch before going further. Resolve `wiki/log.md` conflicts per the CLAUDE.md rule — keep both sides, order by timestamp. Then find unreviewed traces (`grep -l "status: unreviewed" raw/*.md`).
+
+Only conclude there is nothing to review after the fetch and the merges. If you do conclude that, say which branches you checked.
 
 ## 1. Corpus check (dedupe and recurrence)
+
+For each unreviewed trace:
 
 Read `wiki/index.md` and skim the two or three nearest existing idea pages. Judge honestly:
 
@@ -37,6 +52,6 @@ Score 1–5 with a one-line justification each:
 
 Write the review report `raw/<trace>.review.md` (frontmatter: date, model, trace, verdict, scores). For new ideas, create `wiki/ideas/<slug>.md` per the CLAUDE.md frontmatter schema, with a short plain-prose body: the idea, the chain that led to it (one line), prior art found, and an honest one-paragraph assessment. Weak ideas get called weak; the human decides what has legs via the `status` field, which you never set beyond `open`.
 
-Update `wiki/index.md` (entry with one-line summary, scores, recurrence count). Append log entries. Flip trace `status` to `reviewed`. Commit and push per CLAUDE.md conventions.
+Update `wiki/index.md` (entry with one-line summary, scores, recurrence count). Append log entries. Flip trace `status` to `reviewed`. Commit and land per CLAUDE.md conventions — the review is not finished until it is on `main`.
 
 Tone throughout: no hype, no "groundbreaking," no softening. The value of this reviewer is that its tags can be trusted.

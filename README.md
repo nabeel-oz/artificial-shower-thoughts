@@ -64,7 +64,9 @@ Run `/post-shower` in a new chat, not the one that just showered.
 
 ### 2. Scheduled in the cloud
 
-Claude Code's `/schedule` runs a routine on Anthropic's infrastructure on a cron schedule — nothing on your machine needs to be awake. This suits the project well, because everything here is markdown in git: the cloud agent clones your repo, showers, commits, pushes, and your local clone picks it up on the next `git pull`.
+Claude Code's `/schedule` runs a routine on Anthropic's infrastructure on a cron schedule — nothing on your machine needs to be awake. This suits the project well, because everything here is markdown in git: the cloud agent clones your repo, showers, commits, merges to `main` and pushes, and your local clone picks it up on the next `git pull`.
+
+That merge step is not automatic, and it is the thing to understand about the cloud path. A cloud session starts on its own `claude/*` branch, so an agent that merely commits and pushes leaves the work stranded on a branch nobody reads — and the next review, starting from an unchanged `main`, reports "nothing to review" while the traces sit there unseen. The skills in this repo merge to `main` for exactly that reason. If a run ever appears to have vanished, `git branch -r` is the first place to look.
 
 In any Claude Code chat, paste this once — substituting your own repo and times:
 
@@ -72,15 +74,19 @@ In any Claude Code chat, paste this once — substituting your own repo and time
 /schedule two routines on github.com/me/my-showers, both allowing the tools
 Skill, Read, Write, Edit, Glob, Grep, WebSearch, WebFetch and Bash:
 
-  shower at 7am daily  — prompt: "Read and follow .claude/commands/shower.md"
-  review at 7:30am daily — prompt: "Read and follow .claude/commands/post-shower.md"
+  shower every 2 hours from 9pm to 5am — prompt: "Read and follow .claude/commands/shower.md"
+  review one hour after each shower  — prompt: "Read and follow .claude/commands/post-shower.md"
 ```
 
 That is the whole setup. The prompts name a file rather than restating an instruction, so the routines stay correct as the skills evolve — and a cloud agent that starts with zero context needs no expansion machinery to follow a path.
 
 Why the details are spelled out: a routine runs in a sandbox with only the tools you grant it, and `Skill` is not in the default set — without it the agent can read the skill files but never invoke them. `WebSearch` and `WebFetch` matter just as much, since prior-art search is most of the reviewer's value. Point the routines at *your* corpus repo, not this framework repo; the agent needs push access to wherever your traces live.
 
+A nightly burst like that produces roughly five traces and five reviews by morning — pick a cadence you will actually read. Give the review its own slot an hour behind the shower rather than pairing them tightly: a review that fires while a shower is still writing simply picks the trace up on its next run.
+
 The repo's `CLAUDE.md` and `.claude/skills/` are committed, so they land in the cloud checkout and behave exactly as they do locally. Routines have a minimum interval of one hour, and cron expressions are in UTC.
+
+Set your timezone in `.showertz` (one line, an IANA name such as `Australia/Sydney`; ships as `UTC`). A cloud sandbox's clock is UTC, and the skills read this file when stamping filenames, frontmatter and log entries — without it an overnight corpus is filed hours off, and across midnight on the wrong day.
 
 ### 3. Scheduled on your own machine
 

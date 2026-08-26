@@ -52,4 +52,19 @@ status: open | pursuing | parked | retired
 - Plain markdown, no external database, no embedding infrastructure. `wiki/index.md` is the navigation layer; grep is the search engine.
 - Wiki pages are written by agents and read by the human. The human edits taste-level fields (`status: pursuing`, notes) — preserve human edits on regeneration; if new information contradicts a human note, flag it in the page rather than overwriting.
 - Tone in wiki pages: plain and honest. No hype, no self-congratulation. A weak idea gets called weak.
-- Everything is a git repo; commit after each operation with message `<operation>: <title>`. If an `origin` remote is configured, push after committing (`git push`); if the push fails (offline, no remote), the commit alone is fine — do not retry in a loop.
+- **Timestamps come from the clock, never from your own estimate.** Read the time in the repository's timezone, set in `.showertz`:
+
+  ```
+  TZ="$(cat .showertz 2>/dev/null || echo UTC)" date +"%Y-%m-%d %H:%M"
+  ```
+
+  Every timestamp uses it — the trace filename, the `date:` frontmatter, the log heading. A cloud sandbox runs on UTC, so an agent that skips this files the corpus in the wrong timezone and, across midnight, on the wrong day.
+
+## Git
+
+- **Start from current `main`** — `git fetch origin && git merge origin/main`. An incubation shower or a review that begins on a stale branch works from a partial corpus and does not know it.
+- Commit after each operation with message `<operation>: <title>`.
+- **Land the work on `main`.** A commit that exists only on a session branch is invisible: the human reads `main`. If you are on `main`, push. If you are on any other branch — cloud and sandboxed runs start on a per-session `claude/*` branch — merge into `main` and push `main`. Pushing your own branch is not finishing.
+- If the push is rejected because a concurrent run landed first, `git pull --rebase` and push once more. If that also fails, leave your branch pushed and say so plainly — do not retry in a loop.
+- Offline, or no remote configured: the commit alone is fine.
+- `wiki/log.md` conflicts are expected whenever parallel runs land. Never resolve by taking one side — that silently deletes another run's entry. Keep every entry from both sides and order the merged block by timestamp.

@@ -31,7 +31,7 @@ Drift for roughly six to twelve hops. Somewhere in the chain, a shower thought m
 
 ## 3. Leave the trace
 
-Write `raw/YYYY-MM-DD-HHMM-<slug>.md` (slug from the seed or the thought). Frontmatter per CLAUDE.md, `status: unreviewed`. Body format, total under ~400 words:
+Get the timestamp from the clock — `TZ="$(cat .showertz 2>/dev/null || echo UTC)" date +"%Y-%m-%d %H:%M"` — never from your own estimate of the time; a sandbox runs on UTC and will otherwise file the trace under the wrong day. Write `raw/YYYY-MM-DD-HHMM-<slug>.md` using it (slug from the seed or the thought). Frontmatter per CLAUDE.md, `status: unreviewed`. Body format, total under ~400 words:
 
 ```
 ## Seed
@@ -46,4 +46,4 @@ Write `raw/YYYY-MM-DD-HHMM-<slug>.md` (slug from the seed or the thought). Front
 <the crystallized idea, or "Nothing crystallized.">
 ```
 
-Append a log entry: `## [date time] shower | <slug>` with one line naming the mode and seeds. Commit and push per CLAUDE.md conventions. Stop — do not review, score, or search. The shower is over.
+Append a log entry: `## [date time] shower | <slug>` with one line naming the mode and seeds. Commit and land per CLAUDE.md conventions — a trace that stays on a session branch is invisible to the reviewer. Stop — do not review, score, or search. The shower is over.
