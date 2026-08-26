@@ -31,7 +31,7 @@ Drift for roughly six to twelve hops. Somewhere in the chain, a shower thought m
 
 ## 3. Leave the trace
 
-Get the timestamp from the clock — `TZ="$(cat .showertz 2>/dev/null || echo UTC)" date +"%Y-%m-%d %H:%M"` — never from your own estimate of the time; a sandbox runs on UTC and will otherwise file the trace under the wrong day. Write `raw/YYYY-MM-DD-HHMM-<slug>.md` using it (slug from the seed or the thought). Frontmatter per CLAUDE.md, `status: unreviewed`. Body format, total under ~400 words:
+Get the timestamp from `scripts/now.sh --stamp` — never from your own estimate of the time; a sandbox runs on UTC and will otherwise file the trace under the wrong day. Write `raw/<stamp>-<slug>.md` (slug from the seed or the thought). Frontmatter per CLAUDE.md, `status: unreviewed`. Body format, total under ~400 words:
 
 ```
 ## Seed

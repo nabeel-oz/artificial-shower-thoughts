@@ -52,13 +52,14 @@ status: open | pursuing | parked | retired
 - Plain markdown, no external database, no embedding infrastructure. `wiki/index.md` is the navigation layer; grep is the search engine.
 - Wiki pages are written by agents and read by the human. The human edits taste-level fields (`status: pursuing`, notes) — preserve human edits on regeneration; if new information contradicts a human note, flag it in the page rather than overwriting.
 - Tone in wiki pages: plain and honest. No hype, no self-congratulation. A weak idea gets called weak.
-- **Timestamps come from the clock, never from your own estimate.** Read the time in the repository's timezone, set in `.showertz`:
+- **Timestamps come from the clock, never from your own estimate.** Read it from `scripts/now.sh`, which resolves the timezone named in `.showertz`:
 
   ```
-  TZ="$(cat .showertz 2>/dev/null || echo UTC)" date +"%Y-%m-%d %H:%M"
+  scripts/now.sh            # 2026-08-27 09:46   — log headings, frontmatter
+  scripts/now.sh --stamp    # 2026-08-27-0946    — trace filenames
   ```
 
-  Every timestamp uses it — the trace filename, the `date:` frontmatter, the log heading. A cloud sandbox runs on UTC, so an agent that skips this files the corpus in the wrong timezone and, across midnight, on the wrong day.
+  Every timestamp comes from there — the trace filename, the `date:` frontmatter, the log heading. A cloud sandbox runs on UTC, so an agent that composes a time by hand files the corpus in the wrong timezone and, across midnight, on the wrong day. Use the script rather than `TZ=... date` directly: Git Bash on Windows ships no tz database and ignores `TZ` silently, which the script handles.
 
 ## Git
 

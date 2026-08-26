@@ -1,2 +1,5 @@
 # Shell scripts must keep LF endings — CRLF breaks the shebang under WSL/Linux.
 *.sh text eol=lf
+
+# The timezone file is read into a TZ= shell variable; a CR would corrupt it.
+.showertz text eol=lf

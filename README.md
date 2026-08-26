@@ -86,7 +86,7 @@ A nightly burst like that produces roughly five traces and five reviews by morni
 
 The repo's `CLAUDE.md` and `.claude/skills/` are committed, so they land in the cloud checkout and behave exactly as they do locally. Routines have a minimum interval of one hour, and cron expressions are in UTC.
 
-Set your timezone in `.showertz` (one line, an IANA name such as `Australia/Sydney`; ships as `UTC`). A cloud sandbox's clock is UTC, and the skills read this file when stamping filenames, frontmatter and log entries — without it an overnight corpus is filed hours off, and across midnight on the wrong day.
+Set your timezone in `.showertz` (one line, an IANA name such as `Australia/Sydney`; ships as `UTC`). A cloud sandbox's clock is UTC, and the skills stamp filenames, frontmatter and log entries via `scripts/now.sh`, which reads that file — without it an overnight corpus is filed hours off, and across midnight on the wrong day. Check it with `scripts/now.sh` before the first scheduled run; it should print your wall clock.
 
 ### 3. Scheduled on your own machine
 
