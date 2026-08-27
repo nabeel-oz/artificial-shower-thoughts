@@ -52,6 +52,6 @@ Score 1–5 with a one-line justification each:
 
 Write the review report `raw/<trace>.review.md` (frontmatter: date, model, trace, verdict, scores). For new ideas, create `wiki/ideas/<slug>.md` per the CLAUDE.md frontmatter schema, with a short plain-prose body: the idea, the chain that led to it (one line), prior art found, and an honest one-paragraph assessment. Weak ideas get called weak; the human decides what has legs via the `status` field, which you never set beyond `open`.
 
-Update `wiki/index.md` (entry with one-line summary, scores, recurrence count). Append log entries. Flip trace `status` to `reviewed`. Commit and land per CLAUDE.md conventions — the review is not finished until it is on `main`.
+Update `wiki/index.md` (entry with one-line summary, scores, recurrence count). Append one log entry per trace: `## [YYYY-MM-DD HH:MM] review | <slug>`, then a single line of the form ``Verdict: <verdict>. Scores <n>/<n>/<n>. Filed `wiki/ideas/<slug>.md`.`` and **at most two sentences** on what the verdict turned on — nothing more. The searches, prior art, corrections and open questions stay in the review report and the idea page; do not repeat them in the log. Flip trace `status` to `reviewed`. Commit and land per CLAUDE.md conventions — the review is not finished until it is on `main`.
 
 Tone throughout: no hype, no "groundbreaking," no softening. The value of this reviewer is that its tags can be trusted.

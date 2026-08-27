@@ -16,4 +16,6 @@ Look for, in order of value:
 
 Preserve human edits throughout (`status:` values, human notes); if new information contradicts a human note, flag it in the page rather than overwriting. Tone stays plain and honest.
 
-Append a log entry: `## [YYYY-MM-DD HH:MM] lint | <short summary>` with a line on what changed. Commit and push per CLAUDE.md conventions.
+Append a log entry: `## [YYYY-MM-DD HH:MM] lint | <short summary>` — **1–2 sentences** naming what changed (pages merged, concepts promoted, index fixes) and the single best connection found. The reasoning goes on the concept pages and in `wiki/index.md`, not in the log. If older log entries exceed the 1–2 sentence cap, condense them in the same pass — this is the one operation allowed to edit past entries, and the timestamp, operation and title of every entry must survive untouched.
+
+Commit and push per CLAUDE.md conventions.

@@ -46,4 +46,4 @@ Get the timestamp from `scripts/now.sh --stamp` — never from your own estimate
 <the crystallized idea, or "Nothing crystallized.">
 ```
 
-Append a log entry: `## [date time] shower | <slug>` with one line naming the mode and seeds. Commit and land per CLAUDE.md conventions — a trace that stays on a session branch is invisible to the reviewer. Stop — do not review, score, or search. The shower is over.
+Append a log entry: `## [date time] shower | <slug>` with **one or two sentences** naming the mode, the seeds, and where the drift went. No more — the trace holds the detail. Commit and land per CLAUDE.md conventions — a trace that stays on a session branch is invisible to the reviewer. Stop — do not review, score, or search. The shower is over.

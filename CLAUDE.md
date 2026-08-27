@@ -8,7 +8,7 @@ This repository is an automated ideation system. Three workflows operate on it: 
 - `wiki/ideas/` — one page per surviving idea, maintained by the reviewer.
 - `wiki/concepts/` — pages for themes recurring across ideas, maintained during lint.
 - `wiki/index.md` — catalog of all wiki pages: link, one-line summary, status, recurrence count. Updated on every review and lint.
-- `wiki/log.md` — append-only chronological record. Entry prefix format: `## [YYYY-MM-DD HH:MM] <operation> | <title>` where operation is `shower`, `review`, or `lint`. This makes the log greppable: `grep "^## \[" wiki/log.md | tail -5`.
+- `wiki/log.md` — chronological record: a quick timeline of what ran, when, and how it landed. Entry prefix format: `## [YYYY-MM-DD HH:MM] <operation> | <title>` where operation is `shower`, `review`, or `lint`. This makes the log greppable: `grep "^## \[" wiki/log.md | tail -5`. **Keep every entry to 1–2 sentences** (a review entry also carries its verdict and scores). The log is an index, not a report: detail belongs in the trace, the review report, the idea page and `wiki/index.md` — never restate it here. Entries are appended, never edited after the fact; the one exception is a lint pass, which may condense older entries that exceed the cap.
 
 ## Trace frontmatter (required on every shower trace)
 
