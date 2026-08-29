@@ -48,7 +48,19 @@ Score 1–5 with a one-line justification each:
 
 - **Novelty** — relative to the corpus and the found prior art.
 - **Plausibility** — could the mechanism work, at first-principles level. Wild but coherent scores higher than vague and grand.
-- **Potential** — if it worked, how much would it matter.
+- **Potential** — if it worked *and were adopted*, how much would it matter. Use these anchors literally, not as a mood:
+
+  - **5** — would change the trajectory of a field, or reach millions of people. A new class of treatment; a mechanism that makes something currently impossible routine; a change in how a whole system is governed or funded.
+  - **4** — would matter to a large population or reset the standard practice of a substantial field. Hundreds of thousands of people, or the way a discipline does its work.
+  - **3** — a real improvement to an existing domain. Better than the current method, for the people already in that domain, at a scale of tens of thousands.
+  - **2** — a useful improvement in a narrow setting: one profession, one workflow, a few thousand people.
+  - **1** — marginal. Real but small, or it improves something that was not the binding constraint.
+
+  Two rules that make the scale bite. First, **score the constraint, not the mechanism**: if the thing being fixed is not what was actually stopping progress, the ceiling is 2 no matter how elegant the fix. A cheaper measurement in a field whose problem is distribution or incentives is a 2. Second, **4 and 5 must be earned in writing** — name the population and the number in `impact_if_true`, or the score is a 3. If you cannot name who benefits, that is a finding about the idea, not a formatting problem.
+
+  Do not compress toward the middle to be fair. Most ideas are 2s and 3s; a corpus where everything scores 3–4 is a scale that has stopped measuring anything, and it exerts no pressure back on generation, which is the main thing the scores are for.
+
+Then write **`impact_if_true`**: one line, under 25 words — who benefits, at what scale, if the idea works. Concrete and countable where you can ("~200k dialysis patients in low-income countries"), honest where you cannot ("unclear; the beneficiary is the operating clinician, not the patient"). It goes in the idea page frontmatter and justifies the potential score.
 
 Write the review report `raw/<trace>.review.md` (frontmatter: date, model, trace, verdict, scores). For new ideas, create `wiki/ideas/<slug>.md` per the CLAUDE.md frontmatter schema, with a short plain-prose body: the idea, the chain that led to it (one line), prior art found, and an honest one-paragraph assessment. Weak ideas get called weak; the human decides what has legs via the `status` field, which you never set beyond `open`.
 

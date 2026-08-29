@@ -11,13 +11,22 @@ This is generation only. Do not evaluate, do not check prior art, do not conside
 
 ## 1. Choose the mode and gather seeds
 
-**User-seeded** — if the user supplied a topic, idea, or pairing, that is the seed. This is a collaboration: the human brought their shower thought fragment; you drift from it. Still add one stray stimulus of your own (step below) so the drift has somewhere unexpected to go.
+Seeds come from two dedicated agents, launched **in parallel, in a single message**, before you do anything else. Both are cheap and both exist because a shower that picks its own seeds picks badly: it reaches for a field it finds comfortable and a stimulus adjacent to what it was already thinking about, and the corpus fills with variations on one idea.
 
-Otherwise roll: roughly 1 in 3 sessions, **incubation** — pick one idea page from `wiki/ideas/` (choose one you have *not* seen recently in the log; prefer `status: open` or `parked`). Read only that page, not the whole wiki. The parked idea is the seed; the session revisits it in diffuse mode to see what it connects to now.
+- **`frontier-problem`** — returns the field seed: a specific, consequential bottleneck somewhere progress would benefit a great many people. Launch it in fresh mode. Prompt it with nothing but the request; it checks the log itself for what has been done recently.
+- **`stray-stimulus`** — returns the stray perception: one concrete unfamiliar thing, with its mechanism, from a randomly chosen corner of the world. Launch it in **every** mode. Tell it nothing about the field seed — it must not know, or the stimulus stops being stray.
 
-Otherwise, **fresh** — pick an area or profession where a new idea could bring widespread benefit: improving quality of life, progressing knowledge and technology, or addressing problems faced by humanity and the planet. Vary the field across sessions (check the last few log entries only, to avoid repeating yesterday's field — nothing more).
+The stray agent routes its lookup through web search, which runs server-side and works inside a sandbox; the old `Special:Random` fetch does not, and its silent failure is why early sessions kept reusing the same handful of self-picked stimuli. If an agent is genuinely unavailable, fall back to the method it describes and say so in the trace's Seed section.
 
-**Stray stimulus (all modes):** fetch one random Wikipedia article via https://en.wikipedia.org/wiki/Special:Random and skim its opening. If the fetch fails, pick something genuinely unrelated to the seed field yourself — an organism, a historical practice, a physical phenomenon, a craft. The stimulus is not a topic to analyze; it is the stray perception that starts the drift, the way a dripping tap or a falling apple does. It is fine if it ends up contributing nothing.
+The mode decides where the *field* seed comes from; the stray stimulus is constant across all three.
+
+**User-seeded** — the user supplied a topic, idea or pairing, so that is the field seed; skip `frontier-problem`. This is a collaboration: the human brought their shower thought fragment; you drift from it.
+
+Otherwise roll: roughly 1 in 3 sessions, **incubation** — pick one idea page from `wiki/ideas/` (choose one you have *not* seen recently in the log; prefer `status: open` or `parked`). Read only that page, not the whole wiki. The parked idea is the seed; the session revisits it in diffuse mode to see what it connects to now. Skip `frontier-problem`.
+
+Otherwise, **fresh** — the field seed is whatever `frontier-problem` hands back. Take it as given. Do not substitute a field you find more tractable, and do not narrow it to the corner you already know how to instrument.
+
+**Reach for a different shape.** Before drifting, glance at `grep "^## \[" wiki/log.md | tail -10`. If the recent corpus keeps arriving at one kind of answer — and at the time of writing it does: *read a hidden state cheaply and passively, and display it to a human* — then that shape is this system's rut, and an idea with that shape is the least interesting thing you can produce today. Ideas can also be an incentive that changes who does what, a way of organising people, a reframing that dissolves the problem, a piece of theory, a thing to build, a substitution, a removal. Notice when the chain is bending toward the rut, and hop somewhere else instead.
 
 Record all seeds in the trace frontmatter.
 

@@ -14,6 +14,8 @@ Look for, in order of value:
 3. **Near-duplicate idea pages** the reviewer missed — merge into one page, combine frontmatter (sum recurrences, union traces and models), and note the merge in the survivor's body.
 4. **Stale index entries and orphan pages** — every wiki page should appear in `wiki/index.md` with an accurate one-line summary; every index entry should point at a real page.
 
+5. **Schema drift and score compression** — pages written before a schema change keep the old shape. Backfill any idea page missing `impact_if_true` (one line, under 25 words: who benefits and at what scale). While doing so, re-read its `potential` score against the anchors in the post-shower skill and correct it where it does not hold — a page whose beneficiary cannot be named is not a 4. Note re-scores in the page body in one line; never touch the review report in `raw/`, which records what the reviewer said at the time.
+
 Preserve human edits throughout (`status:` values, human notes); if new information contradicts a human note, flag it in the page rather than overwriting. Tone stays plain and honest.
 
 Append a log entry: `## [YYYY-MM-DD HH:MM] lint | <short summary>` — **1–2 sentences** naming what changed (pages merged, concepts promoted, index fixes) and the single best connection found. The reasoning goes on the concept pages and in `wiki/index.md`, not in the log. If older log entries exceed the 1–2 sentence cap, condense them in the same pass — this is the one operation allowed to edit past entries, and the timestamp, operation and title of every entry must survive untouched.

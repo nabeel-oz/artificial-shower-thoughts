@@ -24,6 +24,17 @@ Three layers, adapted from Andrej Karpathy's [LLM Wiki pattern](https://gist.git
 - **`wiki/`** — the compounding layer, written and maintained by the agents: one page per surviving idea, concept pages for recurring themes, `index.md` as the catalog, `log.md` as the chronological record.
 - **The schema** — `CLAUDE.md` plus three skills (`shower`, `post-shower`, `lint`) define the conventions and workflows.
 
+### Where the seeds come from
+
+A shower is only as good as what it starts from, and an agent left to choose its own seeds chooses badly in two specific ways: it picks a field it finds comfortable, and it picks a "random" stimulus that is quietly adjacent to what it was already thinking about. Both failures are invisible in any single trace and obvious across fifty — the corpus converges on small ideas in narrow niches.
+
+So the seeds are delegated to two subagents in `.claude/agents/`, launched in parallel before the drift begins:
+
+- **`frontier-problem`** names the field: one specific, current bottleneck in a domain where progress would reach a great many people. It draws on `references/frontiers.md` — a list of standing bottlenecks framed on Dario Amodei's [*Machines of Loving Grace*](https://www.darioamodei.com/essay/machines-of-loving-grace) — checks the log so it does not repeat last night, and grounds the choice in a live search. **Edit that file to steer what the system thinks about.**
+- **`stray-stimulus`** supplies the stray perception — the dripping tap. `scripts/stray.sh` picks a corner of the world at random on the local machine (a domain, a region, a letter), and the agent goes and finds one concrete unfamiliar thing there, with its mechanism. It is told nothing about the field seed, because a stimulus chosen with the destination in mind is not stray.
+
+Both agents reach the web through **search**, never a direct fetch. This is not a style preference: search is executed server-side by the API, while a direct fetch leaves the sandbox and is blocked by its egress proxy — silently. The original design fetched `Special:Random` from Wikipedia, and in the cloud that fetch failed on every single run, with the agent falling back to picking its own stimulus and never saying so.
+
 ## Setup
 
 Requires [Claude Code](https://claude.com/claude-code). Clone the repo and you have a working instance — `raw/` and `wiki/` start empty and fill up as you run it.
@@ -72,7 +83,7 @@ In any Claude Code chat, paste this once — substituting your own repo and time
 
 ```
 /schedule two routines on github.com/me/my-showers, both allowing the tools
-Skill, Read, Write, Edit, Glob, Grep, WebSearch, WebFetch and Bash:
+Skill, Task, Read, Write, Edit, Glob, Grep, WebSearch, WebFetch and Bash:
 
   shower every 2 hours from 9pm to 5am — prompt: "Read and follow .claude/commands/shower.md"
   review one hour after each shower  — prompt: "Read and follow .claude/commands/post-shower.md"
@@ -80,7 +91,7 @@ Skill, Read, Write, Edit, Glob, Grep, WebSearch, WebFetch and Bash:
 
 That is the whole setup. The prompts name a file rather than restating an instruction, so the routines stay correct as the skills evolve — and a cloud agent that starts with zero context needs no expansion machinery to follow a path.
 
-Why the details are spelled out: a routine runs in a sandbox with only the tools you grant it, and `Skill` is not in the default set — without it the agent can read the skill files but never invoke them. `WebSearch` and `WebFetch` matter just as much, since prior-art search is most of the reviewer's value. Point the routines at *your* corpus repo, not this framework repo; the agent needs push access to wherever your traces live.
+Why the details are spelled out: a routine runs in a sandbox with only the tools you grant it, and `Skill` is not in the default set — without it the agent can read the skill files but never invoke them. `Task` — the subagent tool, surfaced in some clients as `Agent` — matters for the same reason: without it the shower cannot launch its two seeding agents and falls back to choosing its own seeds. `WebSearch` and `WebFetch` matter just as much, since prior-art search is most of the reviewer's value, and search is also the only route to the open web that a sandbox does not block. Point the routines at *your* corpus repo, not this framework repo; the agent needs push access to wherever your traces live.
 
 A nightly burst like that produces roughly five traces and five reviews by morning — pick a cadence you will actually read. Give the review its own slot an hour behind the shower rather than pairing them tightly: a review that fires while a shower is still writing simply picks the trace up on its next run.
 

@@ -8,6 +8,7 @@ This repository is an automated ideation system. Three workflows operate on it: 
 - `wiki/ideas/` — one page per surviving idea, maintained by the reviewer.
 - `wiki/concepts/` — pages for themes recurring across ideas, maintained during lint.
 - `wiki/index.md` — catalog of all wiki pages: link, one-line summary, status, recurrence count. Updated on every review and lint.
+- `references/frontiers.md` — the domains and standing bottlenecks the `frontier-problem` agent draws the field seed from, framed on *Machines of Loving Grace*. Edit this to steer what the system thinks about.
 - `wiki/log.md` — chronological record: a quick timeline of what ran, when, and how it landed. Entry prefix format: `## [YYYY-MM-DD HH:MM] <operation> | <title>` where operation is `shower`, `review`, or `lint`. This makes the log greppable: `grep "^## \[" wiki/log.md | tail -5`. **Keep every entry to 1–2 sentences** (a review entry also carries its verdict and scores). The log is an index, not a report: detail belongs in the trace, the review report, the idea page and `wiki/index.md` — never restate it here. Entries are appended, never edited after the fact; the one exception is a lint pass, which may condense older entries that exceed the cap.
 
 ## Trace frontmatter (required on every shower trace)
@@ -34,6 +35,7 @@ source_traces: [<trace filenames>]
 models: [<model ids that produced or re-derived it>]
 recurrences: <int, times a shower re-derived this idea after the first>
 scores: {novelty: n/5, plausibility: n/5, potential: n/5}
+impact_if_true: <one line, <25 words — who benefits and at what scale if this works>
 verdict: new | variant-of:<idea-slug> | recurrence
 status: open | pursuing | parked | retired
 ---
@@ -41,7 +43,7 @@ status: open | pursuing | parked | retired
 
 ## Operations
 
-**Shower** — generation only. Follow the shower skill. Output: one trace file in `raw/`, one log entry. Nothing else. Do not read the whole wiki first (a fresh shower should not be anchored by the corpus); the skill specifies exactly what context each mode loads.
+**Shower** — generation only. Seeds come from two subagents (`.claude/agents/`): `frontier-problem` names the field, `stray-stimulus` supplies the stray perception. Both must be launched before the drift starts; both route their lookups through web search, which works inside a sandbox where direct fetches do not. Follow the shower skill. Output: one trace file in `raw/`, one log entry. Nothing else. Do not read the whole wiki first (a fresh shower should not be anchored by the corpus); the skill specifies exactly what context each mode loads.
 
 **Review** — evaluation only, fresh context. Follow the post-shower skill. Processes every trace listed as unreviewed. Output: a review report per trace, idea pages created/updated, index updated, log entries.
 
@@ -58,6 +60,8 @@ status: open | pursuing | parked | retired
   scripts/now.sh            # 2026-08-27 09:46   — log headings, frontmatter
   scripts/now.sh --stamp    # 2026-08-27-0946    — trace filenames
   ```
+
+  `scripts/stray.sh` is the other script the workflows call: it prints a randomly chosen corner of the world for the `stray-stimulus` agent to go looking in. The randomness is generated locally on purpose — an agent asked to be random reaches for the same handful of things.
 
   Every timestamp comes from there — the trace filename, the `date:` frontmatter, the log heading. A cloud sandbox runs on UTC, so an agent that composes a time by hand files the corpus in the wrong timezone and, across midnight, on the wrong day. Use the script rather than `TZ=... date` directly: Git Bash on Windows ships no tz database and ignores `TZ` silently, which the script handles.
 
