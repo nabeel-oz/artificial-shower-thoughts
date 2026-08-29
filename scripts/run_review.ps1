@@ -30,7 +30,7 @@ try {
     Add-Content $log "[$(Get-Date -Format s)] review start ($model)"
     & claude -p "/post-shower" `
         --model $model `
-        --allowedTools "Skill,Read,Write,Edit,Glob,Grep,WebSearch,WebFetch,Bash(git:*)" 2>&1 |
+        --allowedTools "Skill,Task,Read,Write,Edit,Glob,Grep,WebSearch,WebFetch,Bash" 2>&1 |
         Add-Content $log
     Add-Content $log "[$(Get-Date -Format s)] review end (exit $LASTEXITCODE)"
 } catch {

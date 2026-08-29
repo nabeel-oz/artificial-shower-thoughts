@@ -12,5 +12,5 @@ MODEL="${SHOWER_MODEL:-opus}"   # opus = latest Opus | sonnet | a full model id
 
 claude -p "/shower" \
   --model "$MODEL" \
-  --allowedTools "Skill,Read,Write,Edit,Glob,Grep,WebFetch,Bash(git:*)" \
+  --allowedTools "Skill,Task,Read,Write,Edit,Glob,Grep,WebSearch,WebFetch,Bash" \
   >> logs/cron.log 2>&1 || true

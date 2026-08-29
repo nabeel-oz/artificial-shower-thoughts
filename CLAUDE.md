@@ -43,7 +43,7 @@ status: open | pursuing | parked | retired
 
 ## Operations
 
-**Shower** — generation only. Seeds come from two subagents (`.claude/agents/`): `frontier-problem` names the field, `stray-stimulus` supplies the stray perception. Both must be launched before the drift starts; both route their lookups through web search, which works inside a sandbox where direct fetches do not. Follow the shower skill. Output: one trace file in `raw/`, one log entry. Nothing else. Do not read the whole wiki first (a fresh shower should not be anchored by the corpus); the skill specifies exactly what context each mode loads.
+**Shower** — generation only. Seeds come from two subagents (`.claude/agents/`): `stray-stimulus` supplies the stray perception in every mode, `frontier-problem` names the field in fresh mode. They are launched before the drift starts; both route their lookups through web search, which works inside a sandbox where direct fetches do not. Follow the shower skill. Output: one trace file in `raw/`, one log entry. Nothing else. Do not read the whole wiki first (a fresh shower should not be anchored by the corpus); the skill specifies exactly what context each mode loads.
 
 **Review** — evaluation only, fresh context. Follow the post-shower skill. Processes every trace listed as unreviewed. Output: a review report per trace, idea pages created/updated, index updated, log entries.
 

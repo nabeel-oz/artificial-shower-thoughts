@@ -28,7 +28,7 @@ Three layers, adapted from Andrej Karpathy's [LLM Wiki pattern](https://gist.git
 
 A shower is only as good as what it starts from, and an agent left to choose its own seeds chooses badly in two specific ways: it picks a field it finds comfortable, and it picks a "random" stimulus that is quietly adjacent to what it was already thinking about. Both failures are invisible in any single trace and obvious across fifty — the corpus converges on small ideas in narrow niches.
 
-So the seeds are delegated to two subagents in `.claude/agents/`, launched in parallel before the drift begins:
+So the seeds are delegated to two subagents in `.claude/agents/`, launched before the drift begins (both in a fresh session; incubation and user-seeded sessions need only the stray one):
 
 - **`frontier-problem`** names the field: one specific, current bottleneck in a domain where progress would reach a great many people. It draws on `references/frontiers.md` — a list of standing bottlenecks framed on Dario Amodei's [*Machines of Loving Grace*](https://www.darioamodei.com/essay/machines-of-loving-grace) — checks the log so it does not repeat last night, and grounds the choice in a live search. **Edit that file to steer what the system thinks about.**
 - **`stray-stimulus`** supplies the stray perception — the dripping tap. `scripts/stray.sh` picks a corner of the world at random on the local machine (a domain, a region, a letter), and the agent goes and finds one concrete unfamiliar thing there, with its mechanism. It is told nothing about the field seed, because a stimulus chosen with the destination in mind is not stray.

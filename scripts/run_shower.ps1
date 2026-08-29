@@ -30,7 +30,7 @@ try {
     Add-Content $log "[$(Get-Date -Format s)] shower start ($model)"
     & claude -p "/shower" `
         --model $model `
-        --allowedTools "Skill,Read,Write,Edit,Glob,Grep,WebFetch,Bash(git:*)" 2>&1 |
+        --allowedTools "Skill,Task,Read,Write,Edit,Glob,Grep,WebSearch,WebFetch,Bash" 2>&1 |
         Add-Content $log
     Add-Content $log "[$(Get-Date -Format s)] shower end (exit $LASTEXITCODE)"
 } catch {

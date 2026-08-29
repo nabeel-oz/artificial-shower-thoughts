@@ -16,7 +16,9 @@
 
 set -euo pipefail
 
-pick() { local i=$(( RANDOM % $# + 1 )); echo "${!i}"; }
+# /dev/urandom rather than $RANDOM: bash seeds RANDOM from time and PID, and
+# correlated scheduled runs can repeat. Randomness is the whole point here.
+pick() { local i=$(( $(od -An -N2 -tu2 /dev/urandom) % $# + 1 )); echo "${!i}"; }
 
 domain=$(pick \
   "a folk craft or trade practice" \
@@ -67,7 +69,7 @@ region=$(pick \
   "the British Isles" "Mesoamerica" "the Balkans" "Indonesia" "Siberia" \
   "the deep ocean" "high mountains" "wetlands" "arid grassland" "caves")
 
-letter=$(pick a b c d e f g h i j k l m n o p q r s t u v w y z)
+letter=$(pick a b c d e f g h i j k l m n o p q r s t u v w x y z)
 
 cat <<SPEC
 domain: $domain

@@ -2,8 +2,8 @@
 
 This file is the field the `frontier-problem` agent grazes in when a shower runs
 in **fresh** mode. It exists because an unconstrained "pick an area" instruction
-drifts, in practice, toward whatever is cheap to imagine: small instrumentation
-in a narrow professional niche. Read a corpus of such ideas and each one is
+drifts, in practice, toward whatever is cheap to imagine: small ideas in
+narrow professional niches. Read a corpus of such ideas and each one is
 defensible; read fifty and the collection has no ambition in it.
 
 The point of this list is not to narrow the shower. It is to make sure the seed
@@ -12,7 +12,8 @@ strange as it likes from there.
 
 The organising frame is Dario Amodei's *Machines of Loving Grace* (2024), which
 asks what a genuinely beneficial acceleration would look like, and answers in
-five buckets. Those are the buckets below, with the standing bottlenecks in each
+five buckets. Those are the first five below, plus a sixth for gaps in
+knowledge itself, with the standing bottlenecks in each
 — the things that are stuck for structural reasons, not for want of one more
 paper. Also worth reading against: the WHO's burden-of-disease priorities, the
 Sustainable Development Goals, the *Nature* / Clay-institute style lists of open
@@ -71,6 +72,9 @@ Included because a gap in understanding is as legitimate a seed as a problem in 
 - Questions the current toolkit cannot even pose properly.
 
 ## Using this file
+
+A bottleneck names a problem, never an approach — the drift decides what kind
+of thing the answer is.
 
 Pick **one** specific bottleneck, not a bucket. "Neurodegeneration" is a bucket;
 "there is no way to know whether a Parkinson's treatment is working until years
